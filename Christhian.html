@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Sistema CETAC 12 PRO</title>
+
+<style>
+
+/* FONDO MODERNO */
+body {
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(120deg, #141e30, #243b55);
+    color:#fff;
+}
+
+/* 🔥 BALONES (NUEVO) */
+.balones {
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:0;
+}
+
+.balon {
+    position:absolute;
+    width:40px;
+    height:40px;
+    background:url('https://cdn-icons-png.flaticon.com/512/53/53283.png') no-repeat center/contain;
+    animation:caer linear infinite;
+    opacity:0.8;
+}
+
+@keyframes caer {
+    from {
+        transform:translateY(-100px) rotate(0deg);
+    }
+    to {
+        transform:translateY(110vh) rotate(360deg);
+    }
+}
+
+/* LOGIN */
+#login {
+    text-align:center;
+    margin-top:120px;
+    animation:fadeIn 1s ease;
+    position:relative;
+    z-index:1;
+}
+
+h2 {
+    letter-spacing:1px;
+}
+
+/* INPUTS */
+input {
+    padding:10px;
+    margin:8px;
+    border-radius:10px;
+    border:none;
+    outline:none;
+    background:rgba(255,255,255,0.1);
+    color:white;
+    transition:0.3s;
+}
+
+input:focus {
+    box-shadow:0 0 10px #00c6ff;
+}
+
+/* BOTONES */
+button {
+    padding:10px 15px;
+    background:linear-gradient(135deg,#00c6ff,#0072ff);
+    color:white;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover {
+    transform:translateY(-2px);
+    box-shadow:0 5px 15px rgba(0,0,0,0.4);
+}
+
+/* SIDEBAR */
+.sidebar {
+    width:230px;
+    height:100vh;
+    background:rgba(0,0,0,0.85);
+    position:fixed;
+    backdrop-filter:blur(10px);
+    border-right:1px solid rgba(255,255,255,0.1);
+    z-index:1;
+}
+
+.sidebar h2 {
+    text-align:center;
+    padding:15px;
+}
+
+.sidebar button {
+    width:100%;
+    background:none;
+    color:#ccc;
+    text-align:left;
+    padding:12px;
+    border-left:3px solid transparent;
+}
+
+.sidebar button:hover {
+    background:rgba(0,198,255,0.1);
+    color:#00c6ff;
+    border-left:3px solid #00c6ff;
+}
+
+/* CONTENIDO */
+.main {
+    margin-left:230px;
+    padding:30px;
+    position:relative;
+    z-index:1;
+}
+
+/* TARJETAS */
+.card {
+    background:rgba(255,255,255,0.08);
+    padding:20px;
+    margin:15px 0;
+    border-radius:15px;
+    backdrop-filter:blur(10px);
+    box-shadow:0 8px 25px rgba(0,0,0,0.3);
+    animation:fadeUp 0.6s ease;
+    transition:0.3s;
+}
+
+.card:hover {
+    transform:translateY(-5px);
+}
+
+/* TABLAS */
+table {
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+    overflow:hidden;
+    border-radius:10px;
+}
+
+th {
+    background:#0072ff;
+    padding:10px;
+}
+
+td {
+    padding:10px;
+    background:rgba(255,255,255,0.05);
+}
+
+tr:hover td {
+    background:rgba(0,198,255,0.1);
+}
+
+/* SECCIONES */
+.seccion {display:none;}
+.activa {display:block;}
+
+/* ANIMACIONES */
+@keyframes fadeUp {
+    from {opacity:0; transform:translateY(30px);}
+    to {opacity:1; transform:translateY(0);}
+}
+
+@keyframes fadeIn {
+    from {opacity:0;}
+    to {opacity:1;}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ⚽ BALONES -->
+<div class="balones">
+    <div class="balon" style="left:5%; animation-duration:6s;"></div>
+    <div class="balon" style="left:15%; animation-duration:8s;"></div>
+    <div class="balon" style="left:30%; animation-duration:7s;"></div>
+    <div class="balon" style="left:50%; animation-duration:9s;"></div>
+    <div class="balon" style="left:70%; animation-duration:6s;"></div>
+    <div class="balon" style="left:85%; animation-duration:10s;"></div>
+</div>
+
+<!-- LOGIN -->
+<div id="login">
+    <h2>Sistema CETAC 12</h2>
+    <input id="usuario" placeholder="Usuario"><br>
+    <input id="password" type="password" placeholder="Contraseña"><br>
+    <button onclick="entrar()">Ingresar</button>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none;">
+
+<div class="sidebar">
+    <h2>CETAC 12</h2>
+    <button onclick="mostrar('dashboard')">🏠 Inicio</button>
+    <button onclick="mostrar('registro')">➕ Registrar</button>
+    <button onclick="mostrar('lista')">📋 Alumnos</button>
+    <button onclick="mostrar('calificaciones')">📊 Calificaciones</button>
+</div>
+
+<div class="main">
+
+<div id="dashboard" class="seccion activa">
+    <div class="card">
+        <h2>Panel Principal</h2>
+        <p>Sistema escolar moderno</p>
+    </div>
+</div>
+
+<div id="registro" class="seccion">
+    <div class="card">
+        <h2>Registrar Alumno</h2>
+        <input id="nombre" placeholder="Nombre">
+        <input id="grupo" placeholder="Grupo">
+        <button onclick="registrar()">Guardar</button>
+    </div>
+</div>
+
+<div id="lista" class="seccion">
+    <div class="card">
+        <h2>Lista de Alumnos</h2>
+        <table id="tablaAlumnos"></table>
+    </div>
+</div>
+
+<div id="calificaciones" class="seccion">
+    <div class="card">
+        <h2>Agregar Calificación</h2>
+        <input id="alumnoCal" placeholder="Nombre">
+        <input id="calificacion" placeholder="Calificación">
+        <button onclick="guardarCalificacion()">Guardar</button>
+    </div>
+
+    <div class="card">
+        <h2>Calificaciones</h2>
+        <table id="tablaCalificaciones"></table>
+    </div>
+</div>
+
+</div>
+</div>
+
+<script>
+/* TU JS ORIGINAL SIN CAMBIOS */
+function entrar(){
+    let u=document.getElementById("usuario").value;
+    let p=document.getElementById("password").value;
+
+    if(u==="admin" && p==="1234"){
+        login.style.display="none";
+        app.style.display="block";
+        cargarAlumnos();
+        cargarCalificaciones();
+    } else alert("Error");
+}
+
+function mostrar(sec){
+    document.querySelectorAll(".seccion").forEach(s=>s.classList.remove("activa"));
+    document.getElementById(sec).classList.add("activa");
+}
+
+function registrar(){
+    let nombre=document.getElementById("nombre").value;
+    let grupo=document.getElementById("grupo").value;
+
+    let alumnos=JSON.parse(localStorage.getItem("alumnos"))||[];
+    alumnos.push({nombre,grupo});
+    localStorage.setItem("alumnos",JSON.stringify(alumnos));
+
+    cargarAlumnos();
+    alert("Alumno agregado");
+}
+
+function cargarAlumnos(){
+    let tabla=document.getElementById("tablaAlumnos");
+    let alumnos=JSON.parse(localStorage.getItem("alumnos"))||[];
+
+    tabla.innerHTML="<tr><th>Nombre</th><th>Grupo</th><th>Acciones</th></tr>";
+
+    alumnos.forEach((a,i)=>{
+        tabla.innerHTML+=`
+        <tr>
+        <td>${a.nombre}</td>
+        <td>${a.grupo}</td>
+        <td>
+        <button onclick="editar(${i})">Editar</button>
+        <button onclick="eliminar(${i})">Eliminar</button>
+        </td>
+        </tr>`;
+    });
+}
+
+function editar(i){
+    let alumnos=JSON.parse(localStorage.getItem("alumnos"));
+    let nuevoNombre=prompt("Nuevo nombre:", alumnos[i].nombre);
+    let nuevoGrupo=prompt("Nuevo grupo:", alumnos[i].grupo);
+
+    if(nuevoNombre && nuevoGrupo){
+        alumnos[i]={nombre:nuevoNombre,grupo:nuevoGrupo};
+        localStorage.setItem("alumnos",JSON.stringify(alumnos));
+        cargarAlumnos();
+    }
+}
+
+function eliminar(i){
+    let alumnos=JSON.parse(localStorage.getItem("alumnos"));
+    alumnos.splice(i,1);
+    localStorage.setItem("alumnos",JSON.stringify(alumnos));
+    cargarAlumnos();
+}
+
+function guardarCalificacion(){
+    let nombre=document.getElementById("alumnoCal").value;
+    let cal=parseFloat(document.getElementById("calificacion").value);
+
+    let calificaciones=JSON.parse(localStorage.getItem("calificaciones"))||[];
+    calificaciones.push({nombre,cal});
+    localStorage.setItem("calificaciones",JSON.stringify(calificaciones));
+
+    cargarCalificaciones();
+}
+
+function cargarCalificaciones(){
+    let tabla=document.getElementById("tablaCalificaciones");
+    let datos=JSON.parse(localStorage.getItem("calificaciones"))||[];
+
+    tabla.innerHTML="<tr><th>Nombre</th><th>Calificación</th><th>Acción</th></tr>";
+
+    let suma=0;
+
+    datos.forEach((c,i)=>{
+        suma+=c.cal;
+
+        tabla.innerHTML+=`
+        <tr>
+        <td>${c.nombre}</td>
+        <td>${c.cal}</td>
+        <td><button onclick="eliminarCal(${i})">Eliminar</button></td>
+        </tr>`;
+    });
+
+    let promedio=datos.length? (suma/datos.length).toFixed(2):0;
+
+    tabla.innerHTML+=`
+    <tr>
+    <td><b>PROMEDIO</b></td>
+    <td colspan="2"><b>${promedio}</b></td>
+    </tr>`;
+}
+
+function eliminarCal(i){
+    let datos=JSON.parse(localStorage.getItem("calificaciones"));
+    datos.splice(i,1);
+    localStorage.setItem("calificaciones",JSON.stringify(datos));
+    cargarCalificaciones();
+}
+</script>
+
+</body>
+</html>
